@@ -7,7 +7,7 @@ input wire clk,rst;
 
 wire[31:0] ir;
 
-wire regWr,regDst,Extop,alusrc,memWr,memtoreg,branch,jump,zero;
+wire regWr,regDst,Extop,alusrc,memWr,memtoreg,checkover,overflow,branch,jump,zero;
 wire[4:0] aluop;
 wire[4:0] rs,rt,rd,shamt;
 wire[5:0] op,func;
@@ -50,6 +50,7 @@ Control control_1(
 	aluop,
 	memWr,
 	memtoreg,
+	checkover,
 	branch,
 	jump
 );
@@ -102,11 +103,13 @@ mux_Extend mux_Extend_1(
 
 alu alu_1(
 	cur_pc,
+	checkover,
 	aluop,
 	shamt,
 	busA,
 	DataB,
 	zero,
+	overflow,
 	result
 );
 

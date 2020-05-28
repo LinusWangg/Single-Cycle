@@ -1,10 +1,12 @@
 module alu(
 	cur_pc,
+	checkover,
 	aluop,
 	shamt,
 	DataA,
 	DataB,
 	zero,
+	overflow,
 	result
 );
 
@@ -13,18 +15,24 @@ input wire[4:0] aluop;
 input wire[4:0] shamt;
 input wire[31:0] DataA;
 input wire[31:0] DataB;
-output reg zero;
+input wire checkover;
+output reg zero,overflow;
 output reg[31:0] result;
+reg Cout;
 
 always@(aluop or DataA or DataB) begin
 	case(aluop)
 		5'b00000: begin  //add
 		result = DataA + DataB;
+		Cout = DataA[31]&DataB[31];
 		zero = (result == 0)?1:0;
+		overflow = checkover&(Cout^result[31]);
 		end
 		5'b00001: begin  //sub
 		result = DataA - DataB;
+		Cout = DataA[31]&DataB[31];
 		zero = (result == 0)?1:0;
+		overflow = checkover&(Cout^result[31]);
 		end
 		5'b00010: begin  //slt
 		result = (DataA < DataB)?1:0;

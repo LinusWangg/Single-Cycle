@@ -9,13 +9,14 @@ module Control(
 	aluop,
 	memWr,
 	memtoreg,
+	checkover,
 	branch,
 	jump
 );
 
 input wire[5:0] op;
 input wire[5:0] func;
-output reg regWr,regDst,Extop,alusrc,memWr,memtoreg,branch,jump;
+output reg regWr,regDst,Extop,alusrc,memWr,memtoreg,checkover,branch,jump;
 output reg[4:0] aluop;
 
 initial begin
@@ -38,6 +39,7 @@ begin
 			regWr = 1;
 			alusrc = 1;
 			memtoreg = 0;
+			checkover = 1;
 			memWr = 0;
 			branch = 0;
 			jump = 0;
@@ -49,6 +51,7 @@ begin
 			regWr = 1;
 			alusrc = 1;
 			memtoreg = 1;
+			checkover = 0;
 			memWr = 0;
 			branch = 0;
 			jump = 0;
@@ -61,6 +64,7 @@ begin
 			alusrc = 1;
 			memtoreg = 1;  //have nothing to do with
 			memWr = 1;
+			checkover = 0;
 			branch = 0;
 			jump = 0;
 			aluop = 5'b00000;  //addu
@@ -72,6 +76,7 @@ begin
 			alusrc = 0;
 			memtoreg = 1;  //have nothing to do with
 			memWr = 0;
+   			checkover = 0;
 			branch = 1;
 			jump = 0;
 			aluop = 5'b00001;  //subu
@@ -83,6 +88,7 @@ begin
 			alusrc = 0;
 			memtoreg = 1;  //have nothing to do with
 			memWr = 0;
+			checkover = 0;
 			branch = 1;
 			jump = 0;
 			aluop = 5'b00001;  //subu
@@ -94,6 +100,7 @@ begin
 			alusrc = 0;  //have nothing to do with
 			memtoreg = 1;  //have nothing to do with
 			memWr = 0;
+			checkover = 0;
 			branch = 0;
 			jump = 1;
 			aluop = 5'b00001;  //have nothing to do with
@@ -105,6 +112,7 @@ begin
 			alusrc = 0;  //have nothing to do with
 			memtoreg = 0;
 			memWr = 0;
+			checkover = 0;
 			branch = 0;
 			jump = 1;
 			aluop = 5'b01010;  //jalr
@@ -116,6 +124,7 @@ begin
 			alusrc = 1;
 			memtoreg = 0;
 			memWr = 0;
+			checkover = 0;
 			branch = 0;
 			jump = 0;
 			aluop = 5'b10000;  //lui
@@ -127,17 +136,19 @@ begin
 			alusrc = 1;
 			memtoreg = 0;
 			memWr = 0;
+			checkover = 0;
 			branch = 0;
 			jump = 0;
 			aluop = 5'b00010;  //slti
 			end
 		6'b001011: begin  //sltiu
-			Extop = 0;
+			Extop = 1;
 			regDst = 0;
 			regWr = 1;
 			alusrc = 1;
 			memtoreg = 0;
 			memWr = 0;
+			checkover = 0;
 			branch = 0;
 			jump = 0;
 			aluop = 5'b01001;  //sltiu
@@ -149,6 +160,7 @@ begin
 			alusrc = 0;
 			memtoreg = 0;  //have nothing to do with
 			memWr = 0;
+			checkover = 0;
 			branch = 1;
 			jump = 0;
 			aluop = 5'b00000;  //have nothing to do with
@@ -160,6 +172,7 @@ begin
 			alusrc = 0;
 			memtoreg = 0;  //have nothing to do with
 			memWr = 0;
+			checkover = 0;
 			branch = 1;
 			jump = 0;
 			aluop = 5'b00000;  //have nothing to do with
@@ -171,6 +184,7 @@ begin
 			alusrc = 0;
 			memtoreg = 0;  //have nothing to do with
 			memWr = 0;
+			checkover = 0;
 			branch = 1;
 			jump = 0;
 			aluop = 5'b00000;  //have nothing to do with
@@ -182,6 +196,7 @@ begin
 			alusrc = 0;
 			memtoreg = 0;  //have nothing to do with
 			memWr = 0;
+			checkover = 0;
 			branch = 1;
 			jump = 0;
 			aluop = 5'b00000;  //have nothing to do with
@@ -193,6 +208,7 @@ begin
 			memtoreg = 1;
 			regWr = 1;
 			memWr = 0;
+			checkover = 0;
 			branch = 0;
 			jump = 0;
 			aluop = 5'b00000;  //have nothing to do with
@@ -204,6 +220,7 @@ begin
 			memtoreg = 1;
 			regWr = 1;
 			memWr = 0;
+			checkover = 0;
 			branch = 0;
 			jump = 0;
 			aluop = 5'b00000;  //have nothing to do with
@@ -213,6 +230,8 @@ begin
 			regWr = 0;
 			memWr = 1;
 			alusrc = 1;
+			memtoreg = 0;
+			checkover = 0;
 			branch = 1;
 			jump = 0;
 			aluop = 5'b00000;  //have nothing to do with
@@ -224,6 +243,7 @@ begin
 			alusrc = 1;
 			memtoreg = 0;
 			memWr = 0;
+			checkover = 0;
 			branch = 0;
 			jump = 0;
 			aluop = 5'b00011;  //and
@@ -235,6 +255,7 @@ begin
 			alusrc = 1;
 			memtoreg = 0;
 			memWr = 0;
+			checkover = 0;
 			branch = 0;
 			jump = 0;
 			aluop = 5'b00101;  //or
@@ -246,6 +267,7 @@ begin
 			alusrc = 1;
 			memtoreg = 0;
 			memWr = 0;
+			checkover = 0;
 			branch = 0;
 			jump = 0;
 			aluop = 5'b00110;  //xor
@@ -259,6 +281,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 1;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b00000;  // add
@@ -270,6 +293,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b00000;  // add
@@ -281,6 +305,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 1;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b00001;  // sub
@@ -292,6 +317,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b00001;  // sub
@@ -303,6 +329,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b00010;  // slt
@@ -314,6 +341,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b00011;  // and
@@ -325,6 +353,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b00100;  // nor
@@ -336,6 +365,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b00101;  //  or
@@ -347,6 +377,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b00110;  //  xor
@@ -358,6 +389,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b00111;  //sll
@@ -369,6 +401,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b01000;  //srl
@@ -380,6 +413,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b01001;  //sltu
@@ -391,6 +425,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b01010;  //jalr
@@ -402,6 +437,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b01011;  //jr
@@ -413,6 +449,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b01100;  //sllv
@@ -424,6 +461,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b01101;  //sra
@@ -435,6 +473,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b01110;  //srav
@@ -446,6 +485,7 @@ begin
 				alusrc = 0;
 				memtoreg = 0;
 				memWr = 0;
+				checkover = 0;
 				branch = 0;
 				jump = 0;
 				aluop = 5'b01111;  //srlv
